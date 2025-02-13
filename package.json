@@ -1,0 +1,30 @@
+{
+  "name": "lord",
+  "version": "1.0.0",
+  "description": "Library( The Lord of the Rings )",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Waldemar-00/LORD.git"
+  },
+  "author": "uladzimir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Waldemar-00/LORD/issues"
+  },
+  "homepage": "https://github.com/Waldemar-00/LORD#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "eslint": "^9.20.1",
+    "globals": "^15.14.0",
+    "live-server": "^1.2.2",
+    "rollup": "^4.34.6",
+    "rollup-plugin-import-css": "^3.5.8"
+  }
+}
