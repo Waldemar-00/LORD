@@ -1,5 +1,6 @@
-import { AbstractView } from "../../common/view.js"
+import { AbstractView } from "../../common/abstract_view.js"
 import onChange from 'on-change'
+import { Header } from "../../components/header/header.js"
 
 export class MainView extends AbstractView
 {
@@ -21,13 +22,17 @@ export class MainView extends AbstractView
     {
         if( path === 'favorites') console.log( path )
     }
-     render ()
-     {
+    render ()
+    {
          this.root.innerHTML = ''
-         const main = document.createElement( 'h1' )
-         main.innerText = `Number of books: ${ this.appState.favorites.length }`
-         this.root.append( main )
-         this.appState.favorites.push('2')
+         this.renderHeader()
+         this.appState.favorites.push( '2' )
+        //`Number of books: ${ this.appState.favorites.length }`
+    }
+    renderHeader ()
+    {
+        const header = new Header( this.appState ).render()
+        this.root.prepend( header )
     }
     destroy ()
     {

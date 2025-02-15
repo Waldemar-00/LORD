@@ -1,0 +1,16 @@
+#root {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+body {
+    margin: 0;
+    font-family: Open Sans;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+:root {
+    --black: #121212;
+    --white: #FAFAFA;
+}

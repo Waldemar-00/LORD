@@ -1105,6 +1105,47 @@ const onChange = (object, onChange, options = {}) => {
 onChange.target = proxy => proxy?.[TARGET] ?? proxy;
 onChange.unsubscribe = proxy => proxy?.[UNSUBSCRIBE] ?? proxy;
 
+class HeaderComponent
+{
+    constructor ()
+    {
+        this.header = document.createElement( 'header' );
+    }
+    getDiv() { return this.header }
+}
+
+class Header extends HeaderComponent
+{
+    constructor ( appState )
+    {
+        super();
+        this.appState = appState;
+    }
+
+    render ()
+    {
+        this.header.innerHTML = '';
+        this.header.classList.add( 'header' );
+        this.header.innerHTML = `
+            <div class="logo">
+                <img src="./static/logo/logo.svg" alt="logo">
+            </div>
+             <div class="search">
+                <a class="search_anchor" href="#">
+                    <img src="./static/logo/search.svg" alt="search">
+                    <span>Book search</span>
+                </a>
+                <a class="favorites_anchor">
+                    <img src="./static/logo/favorites.svg" alt="favirites">
+                    <span>Favorites</span>
+                    <span class="round">${ this.appState.favorites.length }</span>
+                </a>
+            </div>
+        `;
+        return this.header
+    }
+}
+
 class MainView extends AbstractView
 {
     state = {
@@ -1125,13 +1166,17 @@ class MainView extends AbstractView
     {
         if( path === 'favorites') console.log( path );
     }
-     render ()
-     {
+    render ()
+    {
          this.root.innerHTML = '';
-         const main = document.createElement( 'h1' );
-         main.innerText = `Number of books: ${ this.appState.favorites.length }`;
-         this.root.append( main );
-         this.appState.favorites.push('2');
+         this.renderHeader();
+         this.appState.favorites.push( '2' );
+        //`Number of books: ${ this.appState.favorites.length }`
+    }
+    renderHeader ()
+    {
+        const header = new Header( this.appState ).render();
+        this.root.prepend( header );
     }
     destroy ()
     {

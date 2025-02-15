@@ -6,5 +6,7 @@ export default {
         dir: "dist",
         format: "es"
     },
-    plugins: [css(), nodeResolve()]
+    plugins: [ nodeResolve(), css( {
+      output: "index.css"
+    } ) ],
 }

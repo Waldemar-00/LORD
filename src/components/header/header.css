@@ -1,0 +1,39 @@
+.header, .logo, .search, .favorites_anchor, .search_anchor, .round  {
+    display: flex;
+    align-items: center;
+}
+.header {
+    margin: 1rem 0;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+.logo, .search, .favorites_anchor {
+    justify-content: center;
+}
+.search {
+    color: var(--black);
+    gap: 3.5rem;
+}
+.search_anchor, .favorites_anchor {
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--black);
+}
+
+.search_anchor:hover, .favorites_anchor:hover {
+    text-decoration: underline;
+    color: var(--black);
+}
+.round {
+    justify-content: center;
+    border: 2px solid var(--black);
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 32px;
+    letter-spacing: 0%;
+}
