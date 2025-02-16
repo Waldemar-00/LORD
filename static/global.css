@@ -1,5 +1,5 @@
 #root {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
 }
 body {
@@ -13,4 +13,5 @@ body {
 :root {
     --black: #121212;
     --white: #FAFAFA;
+    --grey: #DEDEDE;
 }

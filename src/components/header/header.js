@@ -1,18 +1,18 @@
-import { HeaderComponent } from '../../common/header_component'
+import { Component } from '../../common/header_component'
 import './header.css'
-export class Header extends HeaderComponent
+export class Header extends Component
 {
     constructor ( appState )
     {
-        super()
+        super( 'header' )
         this.appState = appState
     }
 
     render ()
     {
-        this.header.innerHTML = ''
-        this.header.classList.add( 'header' )
-        this.header.innerHTML = `
+        this.element.innerHTML = ''
+        this.element.classList.add( 'header' )
+        this.element.innerHTML = `
             <div class="logo">
                 <img src="./static/logo/logo.svg" alt="logo">
             </div>
@@ -28,6 +28,6 @@ export class Header extends HeaderComponent
                 </a>
             </div>
         `
-        return this.header
+        return this.element
     }
 }

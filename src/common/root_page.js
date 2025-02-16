@@ -1,4 +1,4 @@
-export class AbstractView
+export class RootPage
 {
     constructor ()
     {

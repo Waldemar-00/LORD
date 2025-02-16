@@ -1,8 +1,7 @@
-export class HeaderComponent
+export class Component
 {
-    constructor ()
+    constructor ( element )
     {
-        this.header = document.createElement( 'header' )
+        this.element = document.createElement( element )
     }
-    getDiv() { return this.header }
 }

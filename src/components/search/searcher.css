@@ -1,0 +1,36 @@
+.searcher {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    gap: 1rem;
+}
+
+.searcher_div {
+    width: 86%;
+    background-color: var(--grey);
+    padding: 0.3rem 3rem;
+    border-radius: 5px;
+}
+.searcher_div input {
+    border: none;
+    background-color: var(--grey);
+    padding: 0.5rem;
+    outline: none;
+    flex: 1;
+    color: #252525;
+}
+.searcher_div label {
+    display: flex;
+    align-items: center;
+}
+.img_seacher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--black);
+    border-radius: 5px;
+    cursor: pointer;
+}
