@@ -1111,6 +1111,10 @@ class Component
     {
         this.element = document.createElement( element );
     }
+    render ()
+    {
+        return
+    }
 }
 
 class Header extends Component
@@ -1152,7 +1156,11 @@ class Seacher extends Component
         super('section');
         this.state = state;
     }
-
+    getSearchQueryValue ()
+    {
+        console.log( this.state.searchQuery );
+        return this.state.searchQuery
+    }
     render ()
     {
         this.element.innerHTML = '';
@@ -1173,10 +1181,47 @@ class Seacher extends Component
 
         `;
         this.element.addEventListener( 'input', ( e ) => this.state.searchQuery = e.target.value );
+        this.element.querySelector( 'button' ).addEventListener( 'click', ( e ) => this.getSearchQueryValue() );
+        this.element.querySelector( 'input' ).addEventListener( 'keydown', ( e ) =>
+        {
+            if(e.code === 'Enter') this.getSearchQueryValue();
+        });
         return this.element
     }
 
 
+}
+
+class Books extends Component
+{
+    constructor ( books )
+    {
+        super( 'section' );
+        this.books = books;
+    }
+
+    render ()
+    {
+        this.element.innerHTML = '';
+        this.element.classList.add( 'books' );
+        if ( this.books.loading )
+        {
+            this.element.innerHTML = `
+             <div class="loading">
+               Books is <span>LOADING...</span>
+            </div>
+        `;
+        } else if ( !this.books.loading  )
+        {
+            this.element.innerHTML = `
+           <div class="amount">
+                Amount of books - ${ this.books.list.length }
+            </div>
+        `;
+        }
+
+        return this.element
+    }
 }
 
 class MainView extends RootPage
@@ -1187,24 +1232,42 @@ class MainView extends RootPage
         list: [],
         offset: 0
     }
-    constructor ( appState )
+    constructor ( appState ) //* { favorites: [] }
     {
         super();
         this.setTitle( 'Search for books' );
         this.appState = appState;
-        this.appState = onChange(this.appState, this.watchAppState.bind( this ) );
+        this.appState = onChange( this.appState, this.watchAppState.bind( this ) );
+        this.#state = onChange( this.#state, this.watchState.bind( this ) );
     }
 
-    watchAppState ( path )
+    watchAppState ( path, _value, _previousValue ) //* arguments fron onCahge('on-change')
     {
-        if( path === 'favorites') console.log( path );
+        // if( path === 'favorites') console.log( path )
+    }
+    async watchState ( path, _value, _previousValue )
+    {
+        if ( path === 'searchQuery' )
+        {
+            this.#state.loading = true;
+            const books = await this.loadBookList( this.#state.searchQuery, this.#state.offset );
+            this.#state.list = books.docs;
+            console.log( this.#state.list.length );
+            this.#state.loading = false;
+        }
+    }
+    async loadBookList ( searchQuery, offset )
+    {
+        const response = await fetch( `https://openlibrary.org/search.json?q=${ searchQuery }&offset=${ offset }` );
+        return await response.json()
     }
     render ()
     {
-         this.root.innerHTML = '';
-         this.renderHeader();
-         this.renderSeacher();
-        //  this.appState.favorites.push( '2' )
+        this.root.innerHTML = '';
+        this.renderHeader();
+        this.renderSeacher();
+        this.renderBooks();
+        // this.appState.favorites.push( '2' )
         //`Number of books: ${ this.appState.favorites.length }`
     }
     renderHeader ()
@@ -1216,6 +1279,12 @@ class MainView extends RootPage
     {
         const seacher = new Seacher( this.#state ).render();
         this.root.append( seacher );
+    }
+
+    renderBooks ()
+    {
+        const books = new Books( this.#state ).render();
+        this.root.append( books );
     }
     destroy ()
     {

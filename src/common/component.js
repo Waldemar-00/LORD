@@ -4,4 +4,8 @@ export class Component
     {
         this.element = document.createElement( element )
     }
+    render ()
+    {
+        return
+    }
 }

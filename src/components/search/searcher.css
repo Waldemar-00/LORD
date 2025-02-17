@@ -2,23 +2,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0 auto;
     gap: 1rem;
 }
 
 .searcher_div {
-    width: 86%;
+    width: 90%;
     background-color: var(--grey);
-    padding: 0.3rem 3rem;
+    padding: 0 0 0 3rem;
     border-radius: 5px;
 }
 .searcher_div input {
+    display: block;
+    height: 1rem;
     border: none;
     background-color: var(--grey);
-    padding: 0.5rem;
+    padding: 0.8rem;
     outline: none;
     flex: 1;
     color: #252525;
+    border-radius: 5px;
 }
 .searcher_div label {
     display: flex;

@@ -1,5 +1,5 @@
 import './searcher.css'
-import { Component } from '../../common/header_component'
+import { Component } from '../../common/component.js'
 
 export class Seacher extends Component
 {
@@ -8,7 +8,11 @@ export class Seacher extends Component
         super('section')
         this.state = state
     }
-
+    getSearchQueryValue ()
+    {
+        console.log( this.state.searchQuery )
+        return this.state.searchQuery
+    }
     render ()
     {
         this.element.innerHTML = ''
@@ -29,6 +33,11 @@ export class Seacher extends Component
 
         `
         this.element.addEventListener( 'input', ( e ) => this.state.searchQuery = e.target.value )
+        this.element.querySelector( 'button' ).addEventListener( 'click', ( e ) => this.getSearchQueryValue() )
+        this.element.querySelector( 'input' ).addEventListener( 'keydown', ( e ) =>
+        {
+            if(e.code === 'Enter') this.getSearchQueryValue()
+        })
         return this.element
     }
 
