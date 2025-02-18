@@ -1225,6 +1225,39 @@ class Books extends Component
     }
 }
 
+class Card extends Component
+{
+    constructor ( state, appState )
+    {
+        super( 'section' );
+        this.state = state;
+        this.appState = appState;
+    }
+    render ()
+    {
+        this.element.innerHTML = '';
+        this.element.classList.add( 'cards' );
+
+        this.element.innerHTML =
+                ( this.state.list.map( book =>
+                    {
+                    return `<div class="card">
+                                <div class="innerImg">
+                                     <img src="" alt="">
+                                </div>
+                                <div class="description">
+                                    <p class="jenre">Action & Adventure</p>
+                                    <p class="title">${ book?.title }</p>
+                                    <p class="author">${book?.author_name}</p>
+                                </div>
+
+                            </div>`
+                    } )
+                ).join( '' );
+        return this.element
+    }
+}
+
 class MainView extends RootPage
 {
     #state = {
@@ -1253,12 +1286,13 @@ class MainView extends RootPage
             this.#state.loading = true;
             const books = await this.loadBookList( this.#state.searchQuery, this.#state.offset );
             this.#state.list = books.docs;
-            // console.log( this.#state.list.length )
+            console.log( this.#state.list );
             this.#state.loading = false;
             this.renderBooks();
         }
         if ( property === 'loading' ) this.renderBooks();
-        if( property === 'list') this.renderBooks();
+        if ( property === 'list' ) this.renderBooks();
+        this.renderCards();
     }
     async loadBookList ( searchQuery, offset )
     {
@@ -1271,6 +1305,7 @@ class MainView extends RootPage
         this.renderHeader();
         this.renderSeacher();
         this.renderBooks();
+        this.renderCards();
         // this.appState.favorites.push( '2' )
         //`Number of books: ${ this.appState.favorites.length }`
     }
@@ -1291,6 +1326,12 @@ class MainView extends RootPage
         const books = new Books( this.#state, this.appState ).render();
         this.root.append( books );
     }
+    renderCards ()
+    {
+        if ( document.querySelector( '.cards' ) ) document.querySelector( '.cards' ).remove();
+        const cards = new Card( this.#state, this.appState ).render();
+        this.root.append( cards );
+    }
     destroy ()
     {
         return
@@ -1301,7 +1342,7 @@ class App
 {
     #routes = [ { path: "", view: MainView } ]
 
-    #appState = { favorites: [] }
+    #appState = { favorites: [], searchQuery: "" }
 
     constructor ()
     {

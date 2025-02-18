@@ -1,3 +1,6 @@
+.amount {
+    margin-bottom: 2rem;
+}
 .amount, .loading{
     font-family: Open Sans;
     font-weight: 600;

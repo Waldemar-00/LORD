@@ -4,7 +4,7 @@ class App
 {
     #routes = [ { path: "", view: MainView } ]
 
-    #appState = { favorites: [] }
+    #appState = { favorites: [], searchQuery: "" }
 
     constructor ()
     {

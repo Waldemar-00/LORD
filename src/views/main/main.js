@@ -3,7 +3,7 @@ import onChange from 'on-change'
 import { Header } from "../../components/header/header.js"
 import { Seacher } from '../../components/search/searcher.js'
 import { Books } from '../../components/books/books.js'
-
+import { Card } from '../../components/books/cards/card.js'
 export class MainView extends RootPage
 {
     #state = {
@@ -32,12 +32,13 @@ export class MainView extends RootPage
             this.#state.loading = true
             const books = await this.loadBookList( this.#state.searchQuery, this.#state.offset )
             this.#state.list = books.docs
-            // console.log( this.#state.list.length )
+            console.log( this.#state.list )
             this.#state.loading = false
             this.renderBooks()
         }
         if ( property === 'loading' ) this.renderBooks()
-        if( property === 'list') this.renderBooks()
+        if ( property === 'list' ) this.renderBooks()
+        this.renderCards()
     }
     async loadBookList ( searchQuery, offset )
     {
@@ -50,6 +51,7 @@ export class MainView extends RootPage
         this.renderHeader()
         this.renderSeacher()
         this.renderBooks()
+        this.renderCards()
         // this.appState.favorites.push( '2' )
         //`Number of books: ${ this.appState.favorites.length }`
     }
@@ -69,6 +71,12 @@ export class MainView extends RootPage
         if ( document.querySelector( '.books' ) ) document.querySelector( '.books' ).remove()
         const books = new Books( this.#state, this.appState ).render()
         this.root.append( books )
+    }
+    renderCards ()
+    {
+        if ( document.querySelector( '.cards' ) ) document.querySelector( '.cards' ).remove()
+        const cards = new Card( this.#state, this.appState ).render()
+        this.root.append( cards )
     }
     destroy ()
     {

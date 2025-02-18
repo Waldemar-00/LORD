@@ -1,0 +1,47 @@
+div, p {
+    margin: 0;
+}
+.cards {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem
+}
+.card {
+    width: 180px;
+    height: 288px;
+    border-radius: 8px;
+}
+.innerImg {
+    width: 180px;
+    height: 140px;
+    background-color: #B8B8B8;
+}
+.description {
+    width: 180px;
+    height: 148px;
+    background-color: var(--black);
+    color: var(--white);
+}
+.jenre {
+    font-family: Open Sans;
+    font-weight: 300;
+    font-size: 10.85px;
+    line-height: 14.78px;
+    letter-spacing: 0%;
+}
+.title {
+    font-family: Open Sans;
+    font-weight: 600;
+    font-size: 15.39px;
+    line-height: 15.96px;
+    letter-spacing: 0%;
+}
+.author {
+    font-family: Open Sans;
+    font-weight: 400;
+    font-size: 10.99px;
+    line-height: 14.97px;
+    letter-spacing: 0%;
+}
