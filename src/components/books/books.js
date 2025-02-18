@@ -3,10 +3,11 @@ import './books.css'
 
 export class Books extends Component
 {
-    constructor ( books )
+    constructor ( books, appState )
     {
         super( 'section' )
         this.books = books
+        this.appState = appState
     }
 
     render ()

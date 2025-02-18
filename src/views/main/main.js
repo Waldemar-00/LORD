@@ -21,20 +21,23 @@ export class MainView extends RootPage
         this.#state = onChange( this.#state, this.watchState.bind( this ) )
     }
 
-    watchAppState ( path, _value, _previousValue ) //* arguments fron onCahge('on-change')
+    watchAppState ( path, _pathName, _pathNamePrevious ) //* arguments fron onCahge('on-change')
     {
         // if( path === 'favorites') console.log( path )
     }
-    async watchState ( path, _value, _previousValue )
+    async watchState ( property, _value, _previousValue )
     {
-        if ( path === 'searchQuery' )
+        if ( property === 'searchQuery' )
         {
             this.#state.loading = true
             const books = await this.loadBookList( this.#state.searchQuery, this.#state.offset )
             this.#state.list = books.docs
-            console.log( this.#state.list.length )
+            // console.log( this.#state.list.length )
             this.#state.loading = false
+            this.renderBooks()
         }
+        if ( property === 'loading' ) this.renderBooks()
+        if( property === 'list') this.renderBooks()
     }
     async loadBookList ( searchQuery, offset )
     {
@@ -63,7 +66,8 @@ export class MainView extends RootPage
 
     renderBooks ()
     {
-        const books = new Books( this.#state ).render()
+        if ( document.querySelector( '.books' ) ) document.querySelector( '.books' ).remove()
+        const books = new Books( this.#state, this.appState ).render()
         this.root.append( books )
     }
     destroy ()
