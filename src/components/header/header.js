@@ -10,7 +10,7 @@ export class Header extends Component
 
     render ()
     {
-        this.element.innerHTML = ''
+        this.element.innerHTML = null
         this.element.classList.add( 'header' )
         this.element.innerHTML = `
             <div class="logo">

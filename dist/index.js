@@ -1127,7 +1127,7 @@ class Header extends Component
 
     render ()
     {
-        this.element.innerHTML = '';
+        this.element.innerHTML = null;
         this.element.classList.add( 'header' );
         this.element.innerHTML = `
             <div class="logo">
@@ -1216,7 +1216,7 @@ class Books extends Component
         {
             this.element.innerHTML = `
            <div class="amount">
-                Amount of books - ${ this.books.list.length }
+                Amount of books - ${ this.books.numFound }
             </div>
         `;
         }
@@ -1235,26 +1235,46 @@ class Card extends Component
     }
     render ()
     {
-        this.element.innerHTML = '';
+        this.element.innerHTML = null;
         this.element.classList.add( 'cards' );
-
         this.element.innerHTML =
                 ( this.state.list.map( book =>
-                    {
+                {
+                    // console.log( this.appState.favorites )
+                    const existInFavorites = this.appState.favorites.find( key => key == book.key );
+                    // console.log( existInFavorites ? 'existInFavorites ' : '')
+
                     return `<div class="card">
                                 <div class="innerImg">
-                                     <img src="" alt="">
+                                     <img src="https://covers.openlibrary.org/b/olid/${ book.cover_edition_key }-M.jpg" alt="cover"/>
                                 </div>
                                 <div class="description">
                                     <p class="jenre">Action & Adventure</p>
-                                    <p class="title">${ book?.title }</p>
-                                    <p class="author">${book?.author_name}</p>
+                                    <p class="title">${ book.title ? book.title : 'No title'}</p>
+                                    <p class="author">${ book.author_name ? book.author_name[0] : 'No Author' }</p>
+                                    <div class="add ${ existInFavorites ? 'active' : ''}">
+                                        ${ existInFavorites
+                                            ? `<img src="static/logo/Frame 14.svg" data-delete=${ book.key } alt="save"/>`
+                                            : `<img src="static/logo/Frame 4.svg" data-key=${ book.key } alt="save"/>`
+                                        }
+                                    </div>
                                 </div>
 
                             </div>`
                     } )
-                ).join( '' );
+            ).join( '' );
+        if ( this.element.innerHTML ) this.#addDeleteToFavorites();
         return this.element
+    }
+    #addDeleteToFavorites ()
+    {
+        this.element.addEventListener( 'click', ( e ) =>
+        {
+            const dataKey = e.target.getAttribute( 'data-key' );
+            const dataDelete = e.target.getAttribute( 'data-delete' );
+            if( dataKey ) this.appState.favorites = Array.from( new Set( [ ...this.appState.favorites, dataKey ] ) );
+            if ( dataDelete ) this.appState.favorites = this.appState.favorites.filter( key => key !== dataDelete );
+        });
     }
 }
 
@@ -1262,6 +1282,7 @@ class MainView extends RootPage
 {
     #state = {
         searchQuery: null,
+        numFound: 0,
         loading: false,
         list: [],
         offset: 0
@@ -1277,7 +1298,16 @@ class MainView extends RootPage
 
     watchAppState ( path, _pathName, _pathNamePrevious ) //* arguments fron onCahge('on-change')
     {
-        // if( path === 'favorites') console.log( path )
+        if ( path === 'favorites' )
+        {
+            const  header = document.querySelector('header');
+            if ( header )
+            {
+                header.remove();
+                this.renderHeader();
+            }
+            this.renderCards();
+        }
     }
     async watchState ( property, _value, _previousValue )
     {
@@ -1285,8 +1315,9 @@ class MainView extends RootPage
         {
             this.#state.loading = true;
             const books = await this.loadBookList( this.#state.searchQuery, this.#state.offset );
+            this.#state.numFound = books.numFound;
             this.#state.list = books.docs;
-            console.log( this.#state.list );
+            // console.log( books )
             this.#state.loading = false;
             this.renderBooks();
         }
@@ -1356,5 +1387,6 @@ class App
         this.currentView = new View( this.#appState );
         this.currentView.render();
     }
+
 }
 new App();

@@ -18,5 +18,6 @@ class App
         this.currentView = new View( this.#appState )
         this.currentView.render()
     }
+
 }
 new App()

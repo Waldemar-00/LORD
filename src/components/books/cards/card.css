@@ -14,11 +14,21 @@ div, p {
     border-radius: 8px;
 }
 .innerImg {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     width: 180px;
     height: 140px;
     background-color: #B8B8B8;
 }
+.innerImg img {
+    width: 90px;
+    height: 130px;
+}
 .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     width: 180px;
     height: 148px;
     background-color: var(--black);
@@ -28,20 +38,22 @@ div, p {
     font-family: Open Sans;
     font-weight: 300;
     font-size: 10.85px;
-    line-height: 14.78px;
-    letter-spacing: 0%;
 }
 .title {
     font-family: Open Sans;
     font-weight: 600;
     font-size: 15.39px;
-    line-height: 15.96px;
-    letter-spacing: 0%;
 }
 .author {
     font-family: Open Sans;
     font-weight: 400;
     font-size: 10.99px;
-    line-height: 14.97px;
-    letter-spacing: 0%;
+}
+.description p {
+    padding: 8px 0 0 8px;
+}
+.add {
+    margin-left: 8px;
+    margin-top: auto;
+    cursor: pointer;
 }

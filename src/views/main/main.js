@@ -8,6 +8,7 @@ export class MainView extends RootPage
 {
     #state = {
         searchQuery: null,
+        numFound: 0,
         loading: false,
         list: [],
         offset: 0
@@ -23,7 +24,16 @@ export class MainView extends RootPage
 
     watchAppState ( path, _pathName, _pathNamePrevious ) //* arguments fron onCahge('on-change')
     {
-        // if( path === 'favorites') console.log( path )
+        if ( path === 'favorites' )
+        {
+            const  header = document.querySelector('header')
+            if ( header )
+            {
+                header.remove()
+                this.renderHeader()
+            }
+            this.renderCards()
+        }
     }
     async watchState ( property, _value, _previousValue )
     {
@@ -31,8 +41,9 @@ export class MainView extends RootPage
         {
             this.#state.loading = true
             const books = await this.loadBookList( this.#state.searchQuery, this.#state.offset )
+            this.#state.numFound = books.numFound
             this.#state.list = books.docs
-            console.log( this.#state.list )
+            // console.log( books )
             this.#state.loading = false
             this.renderBooks()
         }
