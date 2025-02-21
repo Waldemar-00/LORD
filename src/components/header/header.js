@@ -21,8 +21,8 @@ export class Header extends Component
                     <img src="./static/logo/search.svg" alt="search">
                     <span>Book search</span>
                 </a>
-                <a class="favorites_anchor">
-                    <img src="./static/logo/favorites.svg" alt="favirites">
+                <a class="favorites_anchor" href="#favorites">
+                    <img src="./static/logo/favorites.svg" alt="favorites">
                     <span>Favorites</span>
                     <span class="round">${ this.appState.favorites.length }</span>
                 </a>

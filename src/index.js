@@ -1,10 +1,10 @@
 import { MainView } from './views/main/main'
-
+import { Favorites } from './views/favorites/favorite_books.js'
 class App
 {
-    #routes = [ { path: "", view: MainView } ]
+    #routes = [ { path: "", view: MainView }, { path: "#favorites", view: Favorites }]
 
-    #appState = { favorites: [], searchQuery: "" }
+    #appState = { favorites: [], searchQuery: "", favoritesBooks: [] }
 
     constructor ()
     {

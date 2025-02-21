@@ -1107,7 +1107,7 @@ onChange.unsubscribe = proxy => proxy?.[UNSUBSCRIBE] ?? proxy;
 
 class Component
 {
-    constructor ( element )
+    constructor ( element = 'section' )
     {
         this.element = document.createElement( element );
     }
@@ -1138,8 +1138,8 @@ class Header extends Component
                     <img src="./static/logo/search.svg" alt="search">
                     <span>Book search</span>
                 </a>
-                <a class="favorites_anchor">
-                    <img src="./static/logo/favorites.svg" alt="favirites">
+                <a class="favorites_anchor" href="#favorites">
+                    <img src="./static/logo/favorites.svg" alt="favorites">
                     <span>Favorites</span>
                     <span class="round">${ this.appState.favorites.length }</span>
                 </a>
@@ -1180,7 +1180,7 @@ class Seacher extends Component
               </button>
 
         `;
-        this.element.addEventListener( 'input', ( e ) => this.state.searchQuery = e.target.value );
+        this.element.addEventListener( 'change', ( e ) => this.state.searchQuery = e.target.value );
         this.element.querySelector( 'button' ).addEventListener( 'click', ( e ) => this.getSearchQueryValue() );
         this.element.querySelector( 'input' ).addEventListener( 'keydown', ( e ) =>
         {
@@ -1216,11 +1216,10 @@ class Books extends Component
         {
             this.element.innerHTML = `
            <div class="amount">
-                Amount of books - ${ this.books.numFound }
+                Amount of books - ${ this.books.numFound || this.books.favorites?.length || 0 }
             </div>
         `;
         }
-
         return this.element
     }
 }
@@ -1240,10 +1239,7 @@ class Card extends Component
         this.element.innerHTML =
                 ( this.state.list.map( book =>
                 {
-                    // console.log( this.appState.favorites )
-                    const existInFavorites = this.appState.favorites.find( key => key == book.key );
-                    // console.log( existInFavorites ? 'existInFavorites ' : '')
-
+                    const existInFavorites = this.appState.favorites.find( key => key === book.key );
                     return `<div class="card">
                                 <div class="innerImg">
                                      <img src="https://covers.openlibrary.org/b/olid/${ book.cover_edition_key }-M.jpg" alt="cover"/>
@@ -1272,8 +1268,16 @@ class Card extends Component
         {
             const dataKey = e.target.getAttribute( 'data-key' );
             const dataDelete = e.target.getAttribute( 'data-delete' );
-            if( dataKey ) this.appState.favorites = Array.from( new Set( [ ...this.appState.favorites, dataKey ] ) );
-            if ( dataDelete ) this.appState.favorites = this.appState.favorites.filter( key => key !== dataDelete );
+            if ( dataKey )
+            {
+                this.appState.favorites = Array.from( new Set( [ ...this.appState.favorites, dataKey ] ) );
+                this.appState.favoritesBooks = Array.from( new Set( [ ...this.appState.favoritesBooks, this.state.list.find( book => book.key === dataKey ) ] ) );
+            }
+            if ( dataDelete )
+            {
+                this.appState.favorites = this.appState.favorites.filter( key => key !== dataDelete );
+                this.appState.favoritesBooks = Array.from( new Set( [ ...this.appState.favoritesBooks.filter( book => book.key !== dataDelete ) ] ) );
+            }
         });
     }
 }
@@ -1289,7 +1293,7 @@ class MainView extends RootPage
     }
     constructor ( appState ) //* { favorites: [] }
     {
-        super();
+        super('section');
         this.setTitle( 'Search for books' );
         this.appState = appState;
         this.appState = onChange( this.appState, this.watchAppState.bind( this ) );
@@ -1365,15 +1369,62 @@ class MainView extends RootPage
     }
     destroy ()
     {
-        return
+        onChange.unsubscribe( this.#state );
+        onChange.unsubscribe( this.appState );
+    }
+}
+
+class Favorites extends RootPage
+{
+    constructor ( appState )
+    {
+        super('section');
+        this.setTitle( 'Favorites' );
+        this.appState = appState;
+        this.appState = onChange( this.appState, this.watchAppState.bind( this ) );
+    }
+
+    watchAppState ( path, _pathName, _pathNamePrevious )
+    {
+        if ( path === 'favorites' )
+        {
+           this.render();
+        }
+    }
+    render ()
+    {
+        this.root.innerHTML = '';
+        this.renderHeader();
+        this.renderBooks();
+        this.renderCards();
+    }
+    renderHeader ()
+    {
+        const header = new Header( this.appState ).render();
+        this.root.prepend( header );
+    }
+    renderBooks ()
+    {
+        const books = new Books( this.appState, this.appState ).render();
+        this.root.append( books );
+    }
+    renderCards ()
+    {
+        if ( document.querySelector( '.cards' ) ) document.querySelector( '.cards' ).remove();
+        const cards = new Card({ list: this.appState.favoritesBooks }, this.appState ).render();
+        this.root.append( cards );
+    }
+    destroy ()
+    {
+        onChange.unsubscribe( this.appState );
     }
 }
 
 class App
 {
-    #routes = [ { path: "", view: MainView } ]
+    #routes = [ { path: "", view: MainView }, { path: "#favorites", view: Favorites }]
 
-    #appState = { favorites: [], searchQuery: "" }
+    #appState = { favorites: [], searchQuery: "", favoritesBooks: [] }
 
     constructor ()
     {

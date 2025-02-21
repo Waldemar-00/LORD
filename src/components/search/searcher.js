@@ -32,7 +32,7 @@ export class Seacher extends Component
               </button>
 
         `
-        this.element.addEventListener( 'input', ( e ) => this.state.searchQuery = e.target.value )
+        this.element.addEventListener( 'change', ( e ) => this.state.searchQuery = e.target.value )
         this.element.querySelector( 'button' ).addEventListener( 'click', ( e ) => this.getSearchQueryValue() )
         this.element.querySelector( 'input' ).addEventListener( 'keydown', ( e ) =>
         {

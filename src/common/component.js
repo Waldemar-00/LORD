@@ -1,6 +1,6 @@
 export class Component
 {
-    constructor ( element )
+    constructor ( element = 'section' )
     {
         this.element = document.createElement( element )
     }

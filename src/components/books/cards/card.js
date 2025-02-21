@@ -16,10 +16,7 @@ export class Card extends Component
         this.element.innerHTML =
                 ( this.state.list.map( book =>
                 {
-                    // console.log( this.appState.favorites )
-                    const existInFavorites = this.appState.favorites.find( key => key == book.key )
-                    // console.log( existInFavorites ? 'existInFavorites ' : '')
-
+                    const existInFavorites = this.appState.favorites.find( key => key === book.key )
                     return `<div class="card">
                                 <div class="innerImg">
                                      <img src="https://covers.openlibrary.org/b/olid/${ book.cover_edition_key }-M.jpg" alt="cover"/>
@@ -48,8 +45,16 @@ export class Card extends Component
         {
             const dataKey = e.target.getAttribute( 'data-key' )
             const dataDelete = e.target.getAttribute( 'data-delete' )
-            if( dataKey ) this.appState.favorites = Array.from( new Set( [ ...this.appState.favorites, dataKey ] ) )
-            if ( dataDelete ) this.appState.favorites = this.appState.favorites.filter( key => key !== dataDelete )
+            if ( dataKey )
+            {
+                this.appState.favorites = Array.from( new Set( [ ...this.appState.favorites, dataKey ] ) )
+                this.appState.favoritesBooks = Array.from( new Set( [ ...this.appState.favoritesBooks, this.state.list.find( book => book.key === dataKey ) ] ) )
+            }
+            if ( dataDelete )
+            {
+                this.appState.favorites = this.appState.favorites.filter( key => key !== dataDelete )
+                this.appState.favoritesBooks = Array.from( new Set( [ ...this.appState.favoritesBooks.filter( book => book.key !== dataDelete ) ] ) )
+            }
         })
     }
 }

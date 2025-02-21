@@ -15,7 +15,7 @@ export class MainView extends RootPage
     }
     constructor ( appState ) //* { favorites: [] }
     {
-        super()
+        super('section')
         this.setTitle( 'Search for books' )
         this.appState = appState
         this.appState = onChange( this.appState, this.watchAppState.bind( this ) )
@@ -91,6 +91,7 @@ export class MainView extends RootPage
     }
     destroy ()
     {
-        return
+        onChange.unsubscribe( this.#state )
+        onChange.unsubscribe( this.appState )
     }
 }

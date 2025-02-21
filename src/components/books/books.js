@@ -25,11 +25,10 @@ export class Books extends Component
         {
             this.element.innerHTML = `
            <div class="amount">
-                Amount of books - ${ this.books.numFound }
+                Amount of books - ${ this.books.numFound || this.books.favorites?.length || 0 }
             </div>
         `
         }
-
         return this.element
     }
 }
